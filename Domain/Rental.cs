@@ -20,7 +20,7 @@ public class Rental
         User = user;
         Equipment = equipment;
         RentalDate = DateTime.Now;
-        RentalEndDate = RentalEndDate.AddDays(rentalTime);
+        RentalEndDate = RentalDate.AddDays(rentalTime);
         ReturnDate = null;
         
         Fee = 0;

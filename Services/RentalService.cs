@@ -121,7 +121,7 @@ public class RentalService
             throw new Exception("Equipment has already been returned");
         }
         
-        decimal fee = _feeCalculator.CalculateFee(returningRental.RentalEndDate, DateTime.Now);
+        decimal fee = _feeCalculator.CalculateFee(returningRental.RentalEndDate, returnDate);
         
         returningRental.EndRental(returnDate, fee);
         returningRental.Equipment.Status = EquipmentStatus.Available;
@@ -138,6 +138,44 @@ public class RentalService
             }
         }
         return overdueRentals;
+    }
+
+    public string GenerateSummaryReport()
+    {
+        var sb = new System.Text.StringBuilder();
+
+        sb.AppendLine($"Raport o stanie systemu na {DateTime.Now}\n");
+        var available = GetAvailableEquipment();
+        sb.AppendLine($"Aktualnie dostępny sprzęt: {available.Count} szt. :");
+        if (available.Count == 0)
+        {
+            sb.AppendLine("Brak dostępnego sprzętu");
+        }
+        else
+        {
+            foreach (var equipment in available)
+            {
+                sb.AppendLine($"    -> {equipment.Name}, {equipment.Brand}, {equipment.Model}");
+            }
+        }
+
+        sb.AppendLine();
+
+        var overdue = GetOverdueRentals();
+        sb.AppendLine($"Przeterminowane wypożyczenia:");
+        if (overdue.Count == 0)
+        {
+            sb.AppendLine("Brak opoźnionych wypożyczeń");
+        }
+        else
+        {
+            foreach (var rental in overdue)
+            {
+                sb.AppendLine($"    -> Użytkownik {rental.User.FirstName} {rental.User.LastName}, Sprzęt: {rental.Equipment.Name}, {rental.Equipment.Brand}, {rental.Equipment.Model}.");
+                sb.AppendLine($"    Termin minąl: {rental.RentalEndDate}");
+            }
+        }
+        return sb.ToString();
     }
     
     

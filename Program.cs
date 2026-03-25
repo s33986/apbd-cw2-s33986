@@ -34,12 +34,12 @@ class Program
         service.AddUser(bssworker);
         service.AddUser(lecturer);
         
-        Console.WriteLine("1 use case: correct rental");
+        Console.WriteLine("\nUse case 1: correct rental");
         var correctRental = service.RentEquipment(student1.Id, laptop1.Id, 5);
         Console.WriteLine($"Student {student1.FirstName} {student1.LastName} has rented {laptop1.Name} for 5 days");
         Console.WriteLine($"{laptop1.Name} current status: {laptop1.Status}");
         
-        Console.WriteLine("Use case 2: attempt to rent unavailable equipment");
+        Console.WriteLine("\nUse case 2: attempt to rent unavailable equipment");
         try
         {
             service.RentEquipment(lecturer.Id, laptop1.Id, 3);
@@ -49,8 +49,8 @@ class Program
             Console.WriteLine(e.Message);
         }
         
-        Console.WriteLine("Use case 3: attempt to exceed rental limit");
-        service.RentEquipment(student1.Id, laptop2.Id, 5);
+        Console.WriteLine("\nUse case 3: attempt to exceed rental limit");
+        service.RentEquipment(student1.Id, projector.Id, 5);
         try
         {
             service.RentEquipment(student1.Id, camera.Id, 3);
@@ -59,13 +59,13 @@ class Program
             Console.WriteLine(e.Message);
         }
         
-        Console.WriteLine("Use case 4: return on time");
+        Console.WriteLine("\nUse case 4: return on time");
         
         service.ReturnEquipment(correctRental.Id, DateTime.Now.AddDays(3));
         Console.WriteLine($"Correctly returned {laptop1.Name}, additional fee: {correctRental.Fee}");
         Console.WriteLine($"{laptop1.Name} current status: {laptop1.Status}");
 
-        Console.WriteLine("Use case 5: late return with additional fee");
+        Console.WriteLine("\nUse case 5: late return with additional fee");
         var lateRental = service.RentEquipment(student2.Id, laptop2.Id, 2);
         Console.WriteLine($"Student {student2.FirstName} {student2.LastName} has rented {laptop2.Name} for 2 days");
         Console.WriteLine($"{laptop2.Name} current status: {laptop2.Status}");
@@ -73,5 +73,8 @@ class Program
         service.ReturnEquipment(lateRental.Id, DateTime.Now.AddDays(4));
         Console.WriteLine($"Correctly returned {laptop2.Name}, additional fee: {lateRental.Fee}");
         Console.WriteLine($"{laptop2.Name} current status: {laptop2.Status}");
+
+        string finalReport = service.GenerateSummaryReport();
+        Console.WriteLine($"\n {finalReport}");
     }
 }

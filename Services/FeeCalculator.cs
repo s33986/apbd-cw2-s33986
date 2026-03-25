@@ -2,7 +2,7 @@ namespace apbd_cw2_s33986.Services;
 
 public class FeeCalculator
 {
-    private readonly decimal _dailyFee = 10;
+    private readonly decimal _dailyFee = 10m;
 
     public decimal CalculateFee(DateTime dueDate, DateTime returnDate)
     {
