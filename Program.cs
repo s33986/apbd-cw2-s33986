@@ -58,6 +58,7 @@ class Program
         {
             Console.WriteLine(e.Message);
         }
+        Console.WriteLine($"{camera.Name} current status: {camera.Status}");
         
         Console.WriteLine("\nUse case 4: return on time");
         
