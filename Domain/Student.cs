@@ -6,7 +6,7 @@ public class Student : User
 
     public override int MaxRentals => 2;
 
-    public Student(string firstName, string lastName, UserType type, string indexNumber) : base(firstName, lastName, UserType.Student)
+    public Student(string firstName, string lastName, string indexNumber) : base(firstName, lastName, UserType.Student)
     {
         IndexNumber = indexNumber;
     }

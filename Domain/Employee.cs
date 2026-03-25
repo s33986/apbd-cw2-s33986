@@ -6,7 +6,7 @@ public class Employee : User
 
     public override int MaxRentals => 5;
 
-    public Employee(string firstName, string lastName, UserType type, string position) : base(firstName, lastName, type)
+    public Employee(string firstName, string lastName, string position) : base(firstName, lastName, UserType.Employee)
     {
         Position = position;
     }

@@ -99,7 +99,7 @@ public class RentalService
 
     }
 
-    public void ReturnEquipment(Guid rentalId)
+    public void ReturnEquipment(Guid rentalId, DateTime returnDate)
     {
         Rental returningRental = null;
         foreach (var rental in _rentals)
@@ -123,7 +123,7 @@ public class RentalService
         
         decimal fee = _feeCalculator.CalculateFee(returningRental.RentalEndDate, DateTime.Now);
         
-        returningRental.EndRental(DateTime.Now, fee);
+        returningRental.EndRental(returnDate, fee);
         returningRental.Equipment.Status = EquipmentStatus.Available;
     }
 
