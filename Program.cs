@@ -11,7 +11,7 @@ class Program
 
         var service = new RentalService();
         
-        var laptop1 = new Laptop("Laptop Mac 1", "Apple", "Macbook Air 13'", 16, "M3");
+        var laptop1 = new Laptop("Laptop MacBook 1", "Apple", "Macbook Air 13'", 16, "M3");
         var laptop2 = new Laptop("Laptop Windows 1", "Lenovo", "Thinkpad", 16, "i5");
 
         var projector = new Projector("Projektor przenośny 1", "BENQ", "GV50", "Full HD", 500);
@@ -36,8 +36,8 @@ class Program
         
         Console.WriteLine("1 use case: correct rental");
         var correctRental = service.RentEquipment(student1.Id, laptop1.Id, 5);
-        Console.WriteLine($"Student {student1.FirstName} {student1.LastName} has rented {laptop1.Brand} {laptop1.Model} for 5 days");
-        Console.WriteLine($"{laptop1.Brand} {laptop1.Model} current status: {laptop1.Status}");
+        Console.WriteLine($"Student {student1.FirstName} {student1.LastName} has rented {laptop1.Name} for 5 days");
+        Console.WriteLine($"{laptop1.Name} current status: {laptop1.Status}");
         
         Console.WriteLine("Use case 2: attempt to rent unavailable equipment");
         try
@@ -58,5 +58,20 @@ class Program
         {
             Console.WriteLine(e.Message);
         }
+        
+        Console.WriteLine("Use case 4: return on time");
+        
+        service.ReturnEquipment(correctRental.Id, DateTime.Now.AddDays(3));
+        Console.WriteLine($"Correctly returned {laptop1.Name}, additional fee: {correctRental.Fee}");
+        Console.WriteLine($"{laptop1.Name} current status: {laptop1.Status}");
+
+        Console.WriteLine("Use case 5: late return with additional fee");
+        var lateRental = service.RentEquipment(student2.Id, laptop2.Id, 2);
+        Console.WriteLine($"Student {student2.FirstName} {student2.LastName} has rented {laptop2.Name} for 2 days");
+        Console.WriteLine($"{laptop2.Name} current status: {laptop2.Status}");
+        
+        service.ReturnEquipment(lateRental.Id, DateTime.Now.AddDays(4));
+        Console.WriteLine($"Correctly returned {laptop2.Name}, additional fee: {lateRental.Fee}");
+        Console.WriteLine($"{laptop2.Name} current status: {laptop2.Status}");
     }
 }
