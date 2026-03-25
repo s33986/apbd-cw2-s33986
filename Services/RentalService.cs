@@ -98,6 +98,47 @@ public class RentalService
         return newRental;
 
     }
+
+    public void ReturnEquipment(Guid rentalId)
+    {
+        Rental returningRental = null;
+        foreach (var rental in _rentals)
+        {
+            if (rental.Id == rentalId)
+            {
+                returningRental = rental;
+                break;
+            }
+        }
+
+        if (returningRental == null)
+        {
+            throw new Exception("Rental not found");
+        }
+
+        if (returningRental.ReturnDate != null)
+        {
+            throw new Exception("Equipment has already been returned");
+        }
+        
+        decimal fee = _feeCalculator.CalculateFee(returningRental.RentalEndDate, DateTime.Now);
+        
+        returningRental.EndRental(DateTime.Now, fee);
+        returningRental.Equipment.Status = EquipmentStatus.Available;
+    }
+
+    public List<Rental> GetOverdueRentals()
+    {
+        var overdueRentals = new List<Rental>();
+        foreach (var rental in _rentals)
+        {
+            if (rental.IsOverdue)
+            {
+                overdueRentals.Add(rental);
+            }
+        }
+        return overdueRentals;
+    }
     
     
 }
