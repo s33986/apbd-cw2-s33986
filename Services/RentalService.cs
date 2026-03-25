@@ -40,6 +40,64 @@ public class RentalService
 
         return availableEquipment;
     }
+
+    public Rental RentEquipment(Guid userId, Guid equipmentId, int days)
+    {
+        User rentingUser = null;
+        foreach (var user in _users)
+        {
+            if (user.Id == userId)
+            {
+                rentingUser = user;
+                break;
+            }
+        }
+
+        if (rentingUser == null)
+        {
+            throw new Exception("User not found");
+        }
+        
+        Equipment rentedEquipment = null;
+        foreach (var equipment in _equipment)
+        {
+            if (equipment.Id == equipmentId)
+            {
+                rentedEquipment = equipment;
+                break;
+            }
+        }
+
+        if (rentedEquipment == null)
+        {
+            throw new Exception("Equipment not found");
+        }
+
+        if (rentedEquipment.Status != EquipmentStatus.Available)
+        {
+            throw new  Exception("Selected equipment is not available");
+        }
+
+        int currentActiveRentals = 0;
+        foreach (var rental in _rentals)
+        {
+            if (rental.User.Id == rentingUser.Id && rental.ReturnDate == null)
+            {
+                currentActiveRentals++;
+            }
+        }
+
+        if (currentActiveRentals >= rentingUser.MaxRentals)
+        {
+            throw new Exception("User has reached maximum rentals");
+        }
+
+        var newRental = new Rental(rentingUser, rentedEquipment, days);
+        rentedEquipment.Status = EquipmentStatus.Rented;
+        _rentals.Add(newRental);
+        return newRental;
+
+    }
     
     
 }

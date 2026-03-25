@@ -14,12 +14,12 @@ public class Rental
     
     public decimal Fee { get; private set; }
 
-    public Rental(User user, Equipment equipment, DateTime rentalDate, int rentalTime)
+    public Rental(User user, Equipment equipment, int rentalTime)
     {
         Id = Guid.NewGuid();
         User = user;
         Equipment = equipment;
-        RentalDate = rentalDate;
+        RentalDate = DateTime.Now;
         RentalEndDate = RentalEndDate.AddDays(rentalTime);
         ReturnDate = null;
         
