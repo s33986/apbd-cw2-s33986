@@ -4,5 +4,7 @@ public enum EquipmentStatus
 {
     Available,
     Reserved,
-    Rented
+    Rented,
+    Damaged,
+    InService
 }

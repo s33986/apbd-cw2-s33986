@@ -74,7 +74,36 @@ class Program
         service.ReturnEquipment(lateRental.Id, DateTime.Now.AddDays(4));
         Console.WriteLine($"Correctly returned {laptop2.Name}, additional fee: {lateRental.Fee}");
         Console.WriteLine($"{laptop2.Name} current status: {laptop2.Status}");
+        
+        Console.WriteLine("\nUse case 6: displaying all equipment");
+        var allEquipment = service.GetAllEquipment();
+        foreach (var equipment in allEquipment)
+        {
+            Console.WriteLine($"{equipment.Name}: {equipment.Status}");
+        }
+        
+        Console.WriteLine("\nUse case 7: displaying only available equipment");
+        foreach (var equipment in service.GetAvailableEquipment())
+        {
+            Console.WriteLine($"{equipment.Name}: {equipment.Status}");
+        }
+        
+        Console.WriteLine("\nUse case 8: displaying user's active rentals");
+        var student1ActiveRentals = service.GetUserActiveRentals(student1.Id);
+        Console.WriteLine($"{student1.FirstName} {student1.LastName}: {student1ActiveRentals.Count} active rentals");
+        foreach (var activeRental in student1ActiveRentals)
+        {
+            Console.WriteLine($"    -> {activeRental.Equipment.Name}");
+        }
+        
+        Console.WriteLine("\nUse case 9: displaying overdue rentals");
+        var overdueRentals = service.GetOverdueRentals();
+        foreach (var rental in overdueRentals)
+        {
+            Console.WriteLine($"    -> {rental.Equipment.Name}");
+        }
 
+        Console.WriteLine("\nUse case 10: displaying current state report");
         string finalReport = service.GenerateSummaryReport();
         Console.WriteLine($"\n {finalReport}");
     }

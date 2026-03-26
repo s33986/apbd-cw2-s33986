@@ -177,6 +177,49 @@ public class RentalService
         }
         return sb.ToString();
     }
+
+    public List<Equipment> GetAllEquipment()
+    {
+        var allEquipment = new List<Equipment>();
+        foreach (var equipment in _equipment)
+        {
+            allEquipment.Add(equipment);
+        }
+        return allEquipment;
+    }
+    
+    public List<Rental> GetUserActiveRentals(Guid userId)
+    {
+        var activeRentals = new List<Rental>();
+        foreach (var rental in _rentals)
+        {
+            if (rental.User.Id == userId && rental.ReturnDate == null)
+            {
+                activeRentals.Add(rental);
+            }
+        }
+        return activeRentals;
+    }
+    
+    public void ChangeEquipmentStatus(Guid equipmentId, EquipmentStatus newStatus)
+    {
+        Equipment foundEquipment = null;
+        foreach (var equipment in _equipment)
+        {
+            if (equipment.Id == equipmentId)
+            {
+                foundEquipment = equipment;
+                break;
+            }
+        }
+
+        if (foundEquipment == null)
+        {
+            throw new Exception("Equipment not found");
+        }
+
+        foundEquipment.Status = newStatus;
+    }
     
     
 }
